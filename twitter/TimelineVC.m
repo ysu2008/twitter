@@ -8,6 +8,8 @@
 
 #import "TimelineVC.h"
 
+#import "TweetCell.h"
+
 @interface TimelineVC ()
 
 @property (nonatomic, strong) NSMutableArray *tweets;
@@ -24,23 +26,28 @@
     self = [super initWithStyle:style];
     if (self) {
         self.title = @"Twitter";
-        
+        [self setup];
         [self reload];
     }
     return self;
+}
+
+- (void)setup {
+    UINib *nib = [UINib nibWithNibName:@"TweetCell" bundle:Nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"TweetCell"];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onSignOutButton)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onSignOutButton)];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,6 +57,19 @@
 }
 
 #pragma mark - Table view data source
+
+- (CGFloat)rowHeightForString:(NSString *)string {
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue" size:12]};
+    CGRect sizeRect = [string boundingRectWithSize:CGSizeMake(212.0f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributes context:nil];
+    
+    return sizeRect.size.height + 90;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    Tweet *tweet = self.tweets[indexPath.row];
+    return [self rowHeightForString:tweet.text];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -63,13 +83,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-
+    static NSString *CellIdentifier = @"TweetCell";
+    TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     Tweet *tweet = self.tweets[indexPath.row];
-    cell.textLabel.text = tweet.text;
+    cell.tweetLabel.text = tweet.text;
     
+    //set up user text
+    NSMutableAttributedString *userName = [[NSMutableAttributedString alloc] initWithString:
+                                           [NSString stringWithFormat:@"%@  %@", tweet.userName, tweet.userHandle]];
+    [userName addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:12.0] range:NSMakeRange(0, tweet.userName.length)];
+    [userName addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:12.0] range:NSMakeRange(tweet.userName.length+1, tweet.userHandle.length+1)];
+    
+    cell.userName.attributedText = userName;
+    
+    //hide retweet stuff if it is not a retweet
+    if (![tweet isRetweet]){
+        cell.retweetImage.hidden = YES;
+        cell.retweetLabel.hidden = YES;
+    }
     return cell;
 }
 

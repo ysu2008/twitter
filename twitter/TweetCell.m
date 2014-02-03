@@ -26,4 +26,12 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)didTapReplyButton:(id)sender {
+}
+
+- (IBAction)didTapRetweetButton:(id)sender {
+}
+
+- (IBAction)didTapFavoriteButton:(id)sender {
+}
 @end
