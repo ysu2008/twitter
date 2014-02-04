@@ -30,12 +30,20 @@
     return [NSString stringWithFormat:@"@%@", self.data[@"user"][@"screen_name"]];
 }
 
-- (NSString *)timeStamp {
-    return self.data[@"created_at"];
+- (NSDate *)timeStamp {
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    [df setDateFormat:@"EEE MMM d HH:mm:ss Z y"];
+    NSDate *date = [df dateFromString:(NSString *)self.data[@"created_at"]];
+    
+    return date;
 }
 
 - (BOOL)isRetweet {
     return !![((NSString *)self.data[@"retweeted"]) intValue];
 }
 
+- (NSString *)tweeterImage {
+    return self.data[@"user"][@"profile_image_url"];
+}
 @end

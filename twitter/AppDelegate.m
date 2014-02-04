@@ -118,6 +118,11 @@
     if (!_timelineNVC) {
         TimelineVC *timelineVC = [[TimelineVC alloc] init];
         _timelineNVC = [[UINavigationController alloc] initWithRootViewController:timelineVC];
+        _timelineNVC.navigationBar.barTintColor = [UIColor colorWithRed:0 green:0.67 blue:0.93 alpha:0.5];
+        _timelineNVC.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIColor whiteColor],UITextAttributeTextColor,
+                                                          [UIFont boldSystemFontOfSize:25], UITextAttributeFont, nil];
+
     }
     
     return _timelineNVC;

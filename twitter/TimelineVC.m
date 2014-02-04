@@ -9,6 +9,10 @@
 #import "TimelineVC.h"
 
 #import "TweetCell.h"
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
+#define SECONDS_IN_DAY 86400
+#define SECONDS_IN_HOUR 3600
 
 @interface TimelineVC ()
 
@@ -41,7 +45,12 @@
 {
     [super viewDidLoad];
     
+    //set up navigation bar items
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStylePlain target:self action:@selector(onSignOutButton)];
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"New" style:UIBarButtonItemStylePlain target:self action:@selector(onNewButton)];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -92,7 +101,7 @@
     NSMutableAttributedString *userName = [[NSMutableAttributedString alloc] initWithString:
                                            [NSString stringWithFormat:@"%@  %@", tweet.userName, tweet.userHandle]];
     [userName addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:12.0] range:NSMakeRange(0, tweet.userName.length)];
-    [userName addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:12.0] range:NSMakeRange(tweet.userName.length+1, tweet.userHandle.length+1)];
+    [userName addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:12.0] range:NSMakeRange(tweet.userName.length+1, tweet.userHandle.length+1)];
     
     cell.userName.attributedText = userName;
     
@@ -101,7 +110,30 @@
         cell.retweetImage.hidden = YES;
         cell.retweetLabel.hidden = YES;
     }
+    
+    //populate user image
+    [cell.tweeterImage setImageWithURL:[NSURL URLWithString:tweet.tweeterImage]];
+    
+    //populate time
+    double timeSinceTweet = -[tweet.timeStamp timeIntervalSinceNow];
+    cell.timeLabel.text = [self timeSinceStringFromDuration:timeSinceTweet];
+    
     return cell;
+}
+
+-(NSString *)timeSinceStringFromDuration:(double)duration {
+    if (duration >= SECONDS_IN_DAY){
+        NSInteger numDays = round(duration/SECONDS_IN_DAY);
+        return [NSString stringWithFormat:@"%dd", numDays];
+    }
+    else if (duration >= SECONDS_IN_HOUR) {
+        NSInteger numHours = round(duration/SECONDS_IN_HOUR);
+        return [NSString stringWithFormat:@"%dh", numHours];
+    }
+    else {
+        NSInteger numMinutes = round(duration/60.0);
+        return [NSString stringWithFormat:@"%dm", numMinutes];
+    }
 }
 
 /*
@@ -165,6 +197,10 @@
 
 - (void)onSignOutButton {
     [User setCurrentUser:nil];
+}
+
+- (void)onNewButton {
+    
 }
 
 - (void)reload {
