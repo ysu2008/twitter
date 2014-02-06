@@ -9,6 +9,8 @@
 #import "TimelineVC.h"
 
 #import "TweetCell.h"
+#import "TweetViewController.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
 #define SECONDS_IN_DAY 86400
@@ -71,13 +73,13 @@
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue" size:12]};
     CGRect sizeRect = [string boundingRectWithSize:CGSizeMake(212.0f, CGFLOAT_MAX) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:attributes context:nil];
     
-    return sizeRect.size.height + 90;
+    return sizeRect.size.height + 100;
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Tweet *tweet = self.tweets[indexPath.row];
-    return [self rowHeightForString:tweet.text];
+    return [self rowHeightForString:tweet.text] - ([tweet isRetweet] ? 0 : 18);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -109,6 +111,8 @@
     if (![tweet isRetweet]){
         cell.retweetImage.hidden = YES;
         cell.retweetLabel.hidden = YES;
+        cell.retweetIconHeightConstraint.constant = 0;
+        cell.retweetNameHeightConstraint.constant = 0;
     }
     
     //populate user image
@@ -179,6 +183,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    Tweet *tweet = self.tweets[indexPath.row];
+    [self.navigationController pushViewController:[[TweetViewController alloc] initWithTweet:tweet] animated:YES];
 }
 
 /*

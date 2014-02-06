@@ -15,6 +15,8 @@
 @property (strong, nonatomic) IBOutlet UIImageView *tweeterImage;
 @property (strong, nonatomic) IBOutlet UILabel *userName;
 @property (strong, nonatomic) IBOutlet UIImageView *retweetImage;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetIconHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetNameHeightConstraint;
 
 - (IBAction)didTapReplyButton:(id)sender;
 - (IBAction)didTapRetweetButton:(id)sender;

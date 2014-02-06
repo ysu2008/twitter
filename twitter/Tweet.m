@@ -39,6 +39,14 @@
     return date;
 }
 
+- (NSNumber *)retweetCount {
+    return self.data[@"retweet_count"];
+}
+
+- (NSNumber *)favoriteCount {
+    return self.data[@"favorite_count"];
+}
+
 - (BOOL)isRetweet {
     return !![((NSString *)self.data[@"retweeted"]) intValue];
 }

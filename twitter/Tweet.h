@@ -15,6 +15,8 @@
 @property (nonatomic, strong, readonly) NSString *userHandle;
 @property (nonatomic, strong, readonly) NSDate *timeStamp;
 @property (nonatomic, strong, readonly) NSString *tweeterImage;
+@property (nonatomic, strong, readonly) NSNumber *retweetCount;
+@property (nonatomic, strong, readonly) NSNumber *favoriteCount;
 
 + (NSMutableArray *)tweetsWithArray:(NSArray *)array;
 - (BOOL)isRetweet;
