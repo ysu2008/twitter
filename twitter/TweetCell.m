@@ -8,7 +8,11 @@
 
 #import "TweetCell.h"
 
+#import "TwitterClient.h"
+
 @interface TweetCell()
+@property (strong, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (assign, nonatomic) BOOL isFavorited;
 
 @end
 
@@ -31,6 +35,16 @@
     // Configure the view for the selected state
 }
 
+- (void)setFavoriteButtonState:(BOOL)favorited {
+    self.isFavorited = favorited;
+    if (favorited){
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favorite_on"] forState:UIControlStateNormal];
+    }
+    else {
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favorite"] forState:UIControlStateNormal];
+    }
+}
+
 - (IBAction)didTapReplyButton:(id)sender {
 }
 
@@ -38,5 +52,20 @@
 }
 
 - (IBAction)didTapFavoriteButton:(id)sender {
+    if (self.isFavorited){
+        [self setFavoriteButtonState:NO];
+        [[TwitterClient instance] destroyFavoriteTweetWithIdentifier:self.tweetID
+                                                      success:^(AFHTTPRequestOperation *operation, id response) {
+                                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                      }];
+    }
+    else {
+        [self setFavoriteButtonState:YES];
+        [[TwitterClient instance] favoriteTweetWithIdentifier:self.tweetID
+                                                      success:^(AFHTTPRequestOperation *operation, id response) {
+                                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                      }];
+    }
 }
+
 @end

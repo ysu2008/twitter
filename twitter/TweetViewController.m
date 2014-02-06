@@ -24,6 +24,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *favoriteNumberLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetIconHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetMessageHeightConstraint;
+@property (assign, nonatomic) BOOL isFavorited;
+@property (strong, nonatomic) IBOutlet UIButton *favoriteButton;
 
 
 - (IBAction)didTapReplyButton:(id)sender;
@@ -46,6 +48,7 @@
 - (id)initWithTweet:(Tweet *)tweet {
     if (self = [super initWithNibName:@"TweetViewController" bundle:nil]){
         _tweet = tweet;
+        _isFavorited = [tweet favorited];
         self.title = @"Tweet";
     }
     return self;
@@ -70,6 +73,17 @@
     //set up time
     NSString *dateString = [NSDateFormatter localizedStringFromDate:self.tweet.timeStamp dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterLongStyle];
     self.timeStampLabel.text = dateString;
+    [self setFavoriteButtonState:self.isFavorited];
+}
+
+- (void)setFavoriteButtonState:(BOOL)favorited {
+    self.isFavorited = favorited;
+    if (favorited){
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favorite_on"] forState:UIControlStateNormal];
+    }
+    else {
+        [self.favoriteButton setImage:[UIImage imageNamed:@"favorite"] forState:UIControlStateNormal];
+    }
 }
 
 - (void)viewDidLoad
@@ -92,5 +106,19 @@
 }
 
 - (IBAction)didTapFavoriteButton:(id)sender {
+    if (self.isFavorited){
+        [self setFavoriteButtonState:NO];
+        [[TwitterClient instance] destroyFavoriteTweetWithIdentifier:self.tweet.tweetID
+                                                             success:^(AFHTTPRequestOperation *operation, id response) {
+                                                             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                             }];
+    }
+    else {
+        [self setFavoriteButtonState:YES];
+        [[TwitterClient instance] favoriteTweetWithIdentifier:self.tweet.tweetID
+                                                      success:^(AFHTTPRequestOperation *operation, id response) {
+                                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                      }];
+    }
 }
 @end

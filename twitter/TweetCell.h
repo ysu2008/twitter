@@ -17,11 +17,12 @@
 @property (strong, nonatomic) IBOutlet UIImageView *retweetImage;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetIconHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetNameHeightConstraint;
+@property (assign, nonatomic) long long tweetID;
 
 - (IBAction)didTapReplyButton:(id)sender;
 - (IBAction)didTapRetweetButton:(id)sender;
 - (IBAction)didTapFavoriteButton:(id)sender;
-
+- (void)setFavoriteButtonState:(BOOL)favorited;
 
 
 @end

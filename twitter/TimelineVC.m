@@ -10,6 +10,7 @@
 
 #import "TweetCell.h"
 #import "TweetViewController.h"
+#import "WriteTweetViewController.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
@@ -106,6 +107,10 @@
     [userName addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Light" size:12.0] range:NSMakeRange(tweet.userName.length+1, tweet.userHandle.length+1)];
     
     cell.userName.attributedText = userName;
+    cell.tweetID = [tweet tweetID];
+    
+    //if favorited then light up button
+    [cell setFavoriteButtonState:[tweet favorited]];
     
     //hide retweet stuff if it is not a retweet
     if (![tweet isRetweet]){
@@ -206,7 +211,7 @@
 }
 
 - (void)onNewButton {
-    
+    [self.navigationController pushViewController:[[WriteTweetViewController alloc] init] animated:YES];
 }
 
 - (void)reload {

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WriteTweetViewController">
+            <connections>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dw7-b0-h3o">
+                    <rect key="frame" x="20" y="78" width="50" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="3dB-fd-9R9"/>
+                        <constraint firstAttribute="width" constant="50" id="oJ6-PL-OL9"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Michael Moran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qMx-cw-epZ">
+                    <rect key="frame" x="78" y="87" width="84" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="jWY-Rv-shZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@TheMichaelMoran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7a-Hc-KBv">
+                    <rect key="frame" x="78" y="105" width="102" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="WIf-AH-0Ok"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xj-ha-MdT">
+                    <rect key="frame" x="20" y="136" width="280" height="412"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="v7a-Hc-KBv" firstAttribute="leading" secondItem="Dw7-b0-h3o" secondAttribute="trailing" constant="8" symbolic="YES" id="1bv-Dz-Oij"/>
+                <constraint firstItem="6xj-ha-MdT" firstAttribute="top" secondItem="v7a-Hc-KBv" secondAttribute="bottom" constant="15" id="8KG-if-IUO"/>
+                <constraint firstItem="qMx-cw-epZ" firstAttribute="top" secondItem="1" secondAttribute="top" constant="87" id="GBb-XD-TM0"/>
+                <constraint firstItem="Dw7-b0-h3o" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="LN6-Tb-9nT"/>
+                <constraint firstItem="Dw7-b0-h3o" firstAttribute="top" secondItem="1" secondAttribute="top" constant="78" id="P6R-A4-9eN"/>
+                <constraint firstAttribute="trailing" secondItem="6xj-ha-MdT" secondAttribute="trailing" constant="20" symbolic="YES" id="WYe-wo-pHT"/>
+                <constraint firstAttribute="bottom" secondItem="6xj-ha-MdT" secondAttribute="bottom" constant="20" symbolic="YES" id="Xtw-g0-UXZ"/>
+                <constraint firstItem="6xj-ha-MdT" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="aTj-1a-uFi"/>
+                <constraint firstItem="6xj-ha-MdT" firstAttribute="top" secondItem="Dw7-b0-h3o" secondAttribute="bottom" constant="8" symbolic="YES" id="bb3-FS-Iqr"/>
+                <constraint firstItem="v7a-Hc-KBv" firstAttribute="top" secondItem="qMx-cw-epZ" secondAttribute="bottom" constant="2" id="hxc-Vf-Rvp"/>
+                <constraint firstItem="qMx-cw-epZ" firstAttribute="leading" secondItem="Dw7-b0-h3o" secondAttribute="trailing" constant="8" symbolic="YES" id="rhY-2T-CRw"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

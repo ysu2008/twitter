@@ -47,8 +47,16 @@
     return self.data[@"favorite_count"];
 }
 
+- (long long)tweetID {
+    return [self.data[@"id_str"] longLongValue];
+}
+
 - (BOOL)isRetweet {
     return !![((NSString *)self.data[@"retweeted"]) intValue];
+}
+
+- (BOOL)favorited {
+    return !![((NSString *)self.data[@"favorited"]) intValue];
 }
 
 - (NSString *)tweeterImage {

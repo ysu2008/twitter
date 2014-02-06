@@ -20,5 +20,7 @@
 
 + (NSMutableArray *)tweetsWithArray:(NSArray *)array;
 - (BOOL)isRetweet;
+- (BOOL)favorited;
+- (long long)tweetID;
 
 @end
