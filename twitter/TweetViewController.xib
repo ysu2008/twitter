@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="favoriteButton" destination="UJS-ri-ro8" id="U44-X0-gg8"/>
                 <outlet property="favoriteNumberLabel" destination="Pff-1U-7Wy" id="iaw-FX-9GK"/>
+                <outlet property="retweetButton" destination="1EK-gh-Jpr" id="LnQ-Gh-lrq"/>
                 <outlet property="retweetIcon" destination="5Bg-gh-vnf" id="vBM-2R-aZn"/>
                 <outlet property="retweetIconHeightConstraint" destination="tE5-Af-7Sq" id="aq5-ds-pWQ"/>
                 <outlet property="retweetMessage" destination="9ze-0j-lcq" id="4Lz-Wg-G9f"/>

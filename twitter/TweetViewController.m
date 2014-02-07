@@ -25,8 +25,9 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetIconHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *retweetMessageHeightConstraint;
 @property (assign, nonatomic) BOOL isFavorited;
+@property (assign, nonatomic) BOOL isRetweeted;
 @property (strong, nonatomic) IBOutlet UIButton *favoriteButton;
-
+@property (strong, nonatomic) IBOutlet UIButton *retweetButton;
 
 - (IBAction)didTapReplyButton:(id)sender;
 - (IBAction)didTapRetweetButton:(id)sender;
@@ -49,6 +50,7 @@
     if (self = [super initWithNibName:@"TweetViewController" bundle:nil]){
         _tweet = tweet;
         _isFavorited = [tweet favorited];
+        _isRetweeted = [tweet isSelfRetweeted];
         self.title = @"Tweet";
     }
     return self;
@@ -74,6 +76,7 @@
     NSString *dateString = [NSDateFormatter localizedStringFromDate:self.tweet.timeStamp dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterLongStyle];
     self.timeStampLabel.text = dateString;
     [self setFavoriteButtonState:self.isFavorited];
+    [self setRetweetButtonState:self.isRetweeted];
 }
 
 - (void)setFavoriteButtonState:(BOOL)favorited {
@@ -83,6 +86,16 @@
     }
     else {
         [self.favoriteButton setImage:[UIImage imageNamed:@"favorite"] forState:UIControlStateNormal];
+    }
+}
+
+- (void)setRetweetButtonState:(BOOL)retweeted {
+    self.isRetweeted = retweeted;
+    if (retweeted){
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet_on"] forState:UIControlStateNormal];
+    }
+    else {
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet"] forState:UIControlStateNormal];
     }
 }
 
@@ -103,10 +116,28 @@
 }
 
 - (IBAction)didTapRetweetButton:(id)sender {
+    if (self.isRetweeted){
+        self.retweetNumberLabel.text = [NSString stringWithFormat:@"%lld", [self.retweetNumberLabel.text longLongValue]-1];
+        
+        [self setRetweetButtonState:NO];
+        [[TwitterClient instance] deleteTweetWithIdentifier:self.tweet.tweetID
+                                                    success:^(AFHTTPRequestOperation *operation, id response) {
+                                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                    }];
+    }
+    else {
+        self.retweetNumberLabel.text = [NSString stringWithFormat:@"%lld", [self.retweetNumberLabel.text longLongValue]+1];
+        [self setRetweetButtonState:YES];
+        [[TwitterClient instance] retweetWithIdentifier:self.tweet.tweetID
+                                                success:^(AFHTTPRequestOperation *operation, id response) {
+                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                }];
+    }
 }
 
 - (IBAction)didTapFavoriteButton:(id)sender {
     if (self.isFavorited){
+        self.favoriteNumberLabel.text = [NSString stringWithFormat:@"%lld", [self.favoriteNumberLabel.text longLongValue]-1];
         [self setFavoriteButtonState:NO];
         [[TwitterClient instance] destroyFavoriteTweetWithIdentifier:self.tweet.tweetID
                                                              success:^(AFHTTPRequestOperation *operation, id response) {
@@ -114,6 +145,7 @@
                                                              }];
     }
     else {
+        self.favoriteNumberLabel.text = [NSString stringWithFormat:@"%lld", [self.favoriteNumberLabel.text longLongValue]+1];
         [self setFavoriteButtonState:YES];
         [[TwitterClient instance] favoriteTweetWithIdentifier:self.tweet.tweetID
                                                       success:^(AFHTTPRequestOperation *operation, id response) {

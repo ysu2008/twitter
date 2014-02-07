@@ -15,5 +15,8 @@ extern NSString *const UserDidLogoutNotification;
 
 + (User *)currentUser;
 + (void)setCurrentUser:(User *)currentUser;
+- (NSString *)name;
+- (NSString *)handle;
+- (NSString *)imageURL;
 
 @end

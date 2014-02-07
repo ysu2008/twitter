@@ -65,6 +65,13 @@ static NSString * const kAccessTokenKey = @"kAccessTokenKey";
     [self getPath:@"1.1/statuses/home_timeline.json" parameters:params success:success failure:failure];
 }
 
+//tweeting
+
+- (void)tweetWithStatus:(NSString *)status success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    NSDictionary *params = @{@"status": status};
+    [self postPath:@"1.1/statuses/update.json" parameters:params success:success failure:failure];
+}
+
 //favoriting
 
 - (void)favoriteTweetWithIdentifier:(long long)identifier success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {

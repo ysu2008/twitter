@@ -134,6 +134,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="favoriteButton" destination="4bk-dc-43r" id="hVD-Yi-WA3"/>
+                <outlet property="retweetButton" destination="QyJ-XY-Ncp" id="Kgl-Ki-2Mv"/>
                 <outlet property="retweetIconHeightConstraint" destination="BMh-rQ-MH0" id="fuh-bc-J9u"/>
                 <outlet property="retweetImage" destination="co9-uU-b24" id="H9f-FI-9YM"/>
                 <outlet property="retweetLabel" destination="e4i-mP-KdX" id="tM4-Hu-F2v"/>

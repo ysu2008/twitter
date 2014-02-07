@@ -38,10 +38,10 @@
 
 - (NSString *)userHandle {
     if ([self isRetweet]){
-        return [NSString stringWithFormat:@"@%@", self.data[@"retweeted_status"][@"user"][@"name"]];
+        return [NSString stringWithFormat:@"@%@", self.data[@"retweeted_status"][@"user"][@"screen_name"]];
     }
     else {
-        return [NSString stringWithFormat:@"@%@", self.data[@"user"][@"name"]];
+        return [NSString stringWithFormat:@"@%@", self.data[@"user"][@"screen_name"]];
     }
 }
 

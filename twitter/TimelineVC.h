@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TimelineVC : UITableViewController
+#import "WriteTweetViewController.h"
+
+@interface TimelineVC : UITableViewController<WriteTweetVCDelegate>
 
 @end

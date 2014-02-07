@@ -48,4 +48,16 @@ static User *_currentUser;
     }
 }
 
+- (NSString *)name {
+    return self.data[@"name"];
+}
+
+- (NSString *)handle {
+    return self.data[@"screen_name"];
+}
+
+- (NSString *)imageURL {
+    return self.data[@"profile_image_url"];
+}
+
 @end

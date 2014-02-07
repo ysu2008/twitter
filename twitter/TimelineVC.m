@@ -20,9 +20,10 @@
 @interface TimelineVC ()
 
 @property (nonatomic, strong) NSMutableArray *tweets;
+@property (nonatomic, assign) BOOL isLoading;
 
 - (void)onSignOutButton;
-- (void)reload;
+- (void)reloadWithCount:(int)count;
 
 @end
 
@@ -33,8 +34,9 @@
     self = [super initWithStyle:style];
     if (self) {
         self.title = @"Twitter";
+        self.isLoading = NO;
         [self setup];
-        [self reload];
+        [self reloadWithCount:20];
     }
     return self;
 }
@@ -60,6 +62,14 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    //set up pull to refresh
+    UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    [refresh addTarget:self
+                action:@selector(reload)
+      forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
 }
 
 - (void)didReceiveMemoryWarning
@@ -111,6 +121,9 @@
     
     //if favorited then light up button
     [cell setFavoriteButtonState:[tweet favorited]];
+    
+    //if retweeted light retweet button
+    [cell setRetweetButtonState:[tweet isSelfRetweeted]];
     
     //hide retweet stuff if it is not a retweet
     if (![tweet isRetweet]){
@@ -207,6 +220,30 @@
 
  */
 
+#pragma mark - WriteTweetVCDelegate methods
+
+- (void)didComposeTweetWithBody:(NSString *)body {
+    [[TwitterClient instance] tweetWithStatus:body success:^(AFHTTPRequestOperation *operation, id response) {
+        Tweet *tweet = [[Tweet alloc] initWithDictionary:(NSDictionary *)response];
+        [self.tweets insertObject:tweet atIndex:0];
+        [self.tableView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // Do nothing
+    }];
+    
+}
+
+#pragma mark - UIScrollViewDelegate methods
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    CGFloat actualPosition = scrollView.contentOffset.y;
+    CGFloat contentHeight = scrollView.contentSize.height - 600;
+    if (actualPosition >= contentHeight) {
+        int numTweets = [self.tweets count];
+        [self reloadWithCount:numTweets + 20];
+    }
+}
+
 #pragma mark - Private methods
 
 - (void)onSignOutButton {
@@ -214,16 +251,28 @@
 }
 
 - (void)onNewButton {
-    [self.navigationController pushViewController:[[WriteTweetViewController alloc] init] animated:YES];
+    WriteTweetViewController *vc = [[WriteTweetViewController alloc] initWithDelegate:self];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)reload {
-    [[TwitterClient instance] homeTimelineWithCount:20 sinceId:0 maxId:0 success:^(AFHTTPRequestOperation *operation, id response) {
+- (void)stopRefresh
+{
+    [self.refreshControl endRefreshing];
+}
+
+- (void)reloadWithCount:(int)count {
+    if (self.isLoading){
+        return;
+    }
+    self.isLoading = YES;
+    [[TwitterClient instance] homeTimelineWithCount:count sinceId:0 maxId:0 success:^(AFHTTPRequestOperation *operation, id response) {
         NSLog(@"%@", response);
+        self.isLoading = NO;
         self.tweets = [Tweet tweetsWithArray:response];
         [self.tableView reloadData];
+        [self stopRefresh];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        // Do nothing
+        self.isLoading = NO;
     }];
 }
 

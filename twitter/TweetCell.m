@@ -12,7 +12,9 @@
 
 @interface TweetCell()
 @property (strong, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (strong, nonatomic) IBOutlet UIButton *retweetButton;
 @property (assign, nonatomic) BOOL isFavorited;
+@property (assign, nonatomic) BOOL isRetweeted;
 
 @end
 
@@ -45,16 +47,34 @@
     }
 }
 
+- (void)setRetweetButtonState:(BOOL)retweeted {
+    self.isRetweeted = retweeted;
+    if (retweeted){
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet_on"] forState:UIControlStateNormal];
+    }
+    else {
+        [self.retweetButton setImage:[UIImage imageNamed:@"retweet"] forState:UIControlStateNormal];
+    }
+}
+
 - (IBAction)didTapReplyButton:(id)sender {
 }
 
 - (IBAction)didTapRetweetButton:(id)sender {
-    [[TwitterClient instance] retweetWithIdentifier:self.tweetID
-                                            success:^(AFHTTPRequestOperation *operation, id response) {
-                                                NSLog(@"Success: retweet");
-                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                NSLog(@"Failure: retweet with error: %@", error.localizedDescription);
-                                            }];
+    if (self.isRetweeted){
+        [self setRetweetButtonState:NO];
+        [[TwitterClient instance] deleteTweetWithIdentifier:self.tweetID
+                                                success:^(AFHTTPRequestOperation *operation, id response) {
+                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                }];
+    }
+    else {
+        [self setRetweetButtonState:YES];
+        [[TwitterClient instance] retweetWithIdentifier:self.tweetID
+                                                success:^(AFHTTPRequestOperation *operation, id response) {
+                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                }];
+    }
 }
 
 - (IBAction)didTapFavoriteButton:(id)sender {

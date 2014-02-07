@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WriteTweetViewController : UIViewController
+@protocol WriteTweetVCDelegate
+
+- (void)didComposeTweetWithBody:(NSString *)body;
+
+@end
+
+@interface WriteTweetViewController : UIViewController<UITextViewDelegate>
+
+- (id)initWithDelegate:(id<WriteTweetVCDelegate>)delegate;
 
 @end

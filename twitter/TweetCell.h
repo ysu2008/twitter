@@ -23,6 +23,6 @@
 - (IBAction)didTapRetweetButton:(id)sender;
 - (IBAction)didTapFavoriteButton:(id)sender;
 - (void)setFavoriteButtonState:(BOOL)favorited;
-
+- (void)setRetweetButtonState:(BOOL)retweeted;
 
 @end
