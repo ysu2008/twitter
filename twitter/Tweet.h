@@ -17,8 +17,10 @@
 @property (nonatomic, strong, readonly) NSString *tweeterImage;
 @property (nonatomic, strong, readonly) NSNumber *retweetCount;
 @property (nonatomic, strong, readonly) NSNumber *favoriteCount;
+@property (nonatomic, strong, readonly) NSString *retweeterName;
 
 + (NSMutableArray *)tweetsWithArray:(NSArray *)array;
+- (BOOL)isSelfRetweeted;
 - (BOOL)isRetweet;
 - (BOOL)favorited;
 - (long long)tweetID;

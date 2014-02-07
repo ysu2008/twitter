@@ -65,6 +65,8 @@ static NSString * const kAccessTokenKey = @"kAccessTokenKey";
     [self getPath:@"1.1/statuses/home_timeline.json" parameters:params success:success failure:failure];
 }
 
+//favoriting
+
 - (void)favoriteTweetWithIdentifier:(long long)identifier success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
     NSDictionary *params = @{@"id": [NSNumber numberWithLongLong:identifier]};
     [self postPath:@"1.1/favorites/create.json" parameters:params success:success failure:failure];
@@ -74,6 +76,17 @@ static NSString * const kAccessTokenKey = @"kAccessTokenKey";
     NSDictionary *params = @{@"id": [NSNumber numberWithLongLong:identifier]};
     [self postPath:@"1.1/favorites/destroy.json" parameters:params success:success failure:failure];
 }
+
+//retweeting
+
+- (void)retweetWithIdentifier:(long long)identifier success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    [self postPath:[NSString stringWithFormat:@"1.1/statuses/retweet/%lld.json", identifier] parameters:nil success:success failure:failure];
+}
+
+- (void)deleteTweetWithIdentifier:(long long)identifier success:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+    [self postPath:[NSString stringWithFormat:@"1.1/statuses/destroy/%lld.json", identifier] parameters:nil success:success failure:failure];
+}
+
 
 #pragma mark - Private methods
 

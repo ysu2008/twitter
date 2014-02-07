@@ -19,15 +19,34 @@
 }
 
 - (NSString *)text {
-    return [self.data valueOrNilForKeyPath:@"text"];
+    if ([self isRetweet]){
+        return self.data[@"retweeted_status"][@"text"];
+    }
+    else {
+        return self.data[@"text"];
+    }
 }
 
 - (NSString *)userName {
-    return self.data[@"user"][@"name"];
+    if ([self isRetweet]){
+        return self.data[@"retweeted_status"][@"user"][@"name"];
+    }
+    else {
+        return self.data[@"user"][@"name"];
+    }
 }
 
 - (NSString *)userHandle {
-    return [NSString stringWithFormat:@"@%@", self.data[@"user"][@"screen_name"]];
+    if ([self isRetweet]){
+        return [NSString stringWithFormat:@"@%@", self.data[@"retweeted_status"][@"user"][@"name"]];
+    }
+    else {
+        return [NSString stringWithFormat:@"@%@", self.data[@"user"][@"name"]];
+    }
+}
+
+- (NSString *)retweeterName {
+    return [self isRetweet] ? self.data[@"user"][@"name"] : @"";
 }
 
 - (NSDate *)timeStamp {
@@ -51,8 +70,12 @@
     return [self.data[@"id_str"] longLongValue];
 }
 
-- (BOOL)isRetweet {
+- (BOOL)isSelfRetweeted {
     return !![((NSString *)self.data[@"retweeted"]) intValue];
+}
+
+- (BOOL)isRetweet {
+    return !!self.data[@"retweeted_status"];
 }
 
 - (BOOL)favorited {
@@ -60,6 +83,11 @@
 }
 
 - (NSString *)tweeterImage {
-    return self.data[@"user"][@"profile_image_url"];
+    if ([self isRetweet]){
+        return self.data[@"retweeted_status"][@"user"][@"profile_image_url"];
+    }
+    else {
+        return self.data[@"user"][@"profile_image_url"];
+    }
 }
 @end

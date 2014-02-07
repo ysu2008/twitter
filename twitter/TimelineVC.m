@@ -119,6 +119,9 @@
         cell.retweetIconHeightConstraint.constant = 0;
         cell.retweetNameHeightConstraint.constant = 0;
     }
+    else {
+        cell.retweetLabel.text = [NSString stringWithFormat:@"%@ retweeted", [tweet retweeterName]];
+    }
     
     //populate user image
     [cell.tweeterImage setImageWithURL:[NSURL URLWithString:tweet.tweeterImage]];

@@ -49,6 +49,12 @@
 }
 
 - (IBAction)didTapRetweetButton:(id)sender {
+    [[TwitterClient instance] retweetWithIdentifier:self.tweetID
+                                            success:^(AFHTTPRequestOperation *operation, id response) {
+                                                NSLog(@"Success: retweet");
+                                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                NSLog(@"Failure: retweet with error: %@", error.localizedDescription);
+                                            }];
 }
 
 - (IBAction)didTapFavoriteButton:(id)sender {
